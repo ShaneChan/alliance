@@ -126,25 +126,24 @@ func (c *Conn) dispatch(content string) (string, int) {
 				retString = "加入公会成功"
 			}
 		case "dismissAlliance": // 解散公会
-			if length != 2 {
-				code = 7
-			} else {
-				err := api.DismissAlliance(c.userAccount)
-				if err != nil {
-					log.Println("leave alliance failed, err:", err)
-					code = 7
-				}
-				retString = "解散公会成功"
-			}
-		case "destroyItem": // 销毁公会物品
-			else {
-			num, _ := strconv.Atoi(stringSlice[1])
-			err := api.DestroyItem(c.userAccount, num)
+			err := api.DismissAlliance(c.userAccount)
 			if err != nil {
-				log.Println("destroy alliance item failed, err:", err)
-				code = 8
+				log.Println("leave alliance failed, err:", err)
+				code = 7
 			}
-			retString = "删除物品成功"
+			retString = "解散公会成功"
+		case "destroyItem": // 销毁公会物品
+			if length != 2 {
+				code = 8
+			} else {
+				num, _ := strconv.Atoi(stringSlice[1])
+				err := api.DestroyItem(c.userAccount, num)
+				if err != nil {
+					log.Println("destroy alliance item failed, err:", err)
+					code = 8
+				}
+				retString = "删除物品成功"
+			
 		case "clearup": // 整理公会物品
 			err := api.TidyItems(c.userAccount)
 			if err != nil {
