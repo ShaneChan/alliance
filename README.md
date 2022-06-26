@@ -29,7 +29,7 @@ docker run -i -t --net=host alliance_alliance_server的容器id
 ```
 （alliance_alliance_server容器启动时间可能会比较长，因为服务器在启动的过程中需要拉一些golang的依赖）
 ```bash
-docker run -t -i --net=host alliance_alliance_client的容器id
+docker run -i -t --net=host alliance_alliance_client的容器id
 ```
 以上三条命令中都有一个参数 --net=host ，这个参数的意思是以宿主机模式启动容器服务，容器可以使用宿主机的网络ip地址和端口，这样可以实现多容器之间的互联
 ## 具体操作
