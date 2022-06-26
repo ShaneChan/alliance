@@ -85,8 +85,13 @@ func CreateAlliance(userAccount string, alliance string) error {
 }
 
 // 加入公会
-func JoinAlliance(userAccount string, allianceName string) error {
-	_, err := mgo.UpdateOne("testing", "user", bson.M{"account": userAccount}, bson.M{"$set": bson.M{"allianceName": allianceName}}, options.Update().SetUpsert(true))
+func JoinAlliance(userAccount string, alliance string) error {
+	OldAllianceName, _ := allianceName(userAccount)
+
+	if OldAllianceName != "" {
+		return errors.New("already have alliance")
+	}
+	_, err := mgo.UpdateOne("testing", "user", bson.M{"account": userAccount}, bson.M{"$set": bson.M{"allianceName": alliance}}, options.Update().SetUpsert(true))
 
 	return err
 }

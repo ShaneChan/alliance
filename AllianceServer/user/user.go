@@ -60,33 +60,42 @@ func (c *Conn) dispatch(content string) (string, int) {
 	stringSlice := util.DealString(content)
 	code := 0
 	var retString string
+	length := len(stringSlice)
 	if !c.isLogin && !(stringSlice[0] == "login" || stringSlice[0] == "register") {
 		code = predefine.NOT_LOGIN
 	} else {
 		switch stringSlice[0] {
 		case "register": // 注册并登录
-			err := api.Register(stringSlice[1], stringSlice[2])
-			if err != nil {
-				log.Println("register failed, err:", err)
+			if length != 3 {
 				code = 2
+			} else {
+				err := api.Register(stringSlice[1], stringSlice[2])
+				if err != nil {
+					log.Println("register failed, err:", err)
+					code = 2
+				}
+				err = api.Login(stringSlice[1], stringSlice[2])
+				if err != nil {
+					log.Println("login failed, err:", err)
+					code = 3
+				}
+				c.isLogin = true
+				c.userAccount = stringSlice[1]
+				retString = "注册并登录成功"
 			}
-			err = api.Login(stringSlice[1], stringSlice[2])
-			if err != nil {
-				log.Println("login failed, err:", err)
-				code = 3
-			}
-			c.isLogin = true
-			c.userAccount = stringSlice[1]
-			retString = "注册并登录成功"
 		case "login": // 登录
-			err := api.Login(stringSlice[1], stringSlice[2])
-			if err != nil {
-				log.Println("login failed, err:", err)
+			if length != 3 {
 				code = 3
+			} else {
+				err := api.Login(stringSlice[1], stringSlice[2])
+				if err != nil {
+					log.Println("login failed, err:", err)
+					code = 3
+				}
+				c.isLogin = true
+				c.userAccount = stringSlice[1]
+				retString = "登录成功"
 			}
-			c.isLogin = true
-			c.userAccount = stringSlice[1]
-			retString = "登录成功"
 		case "allianceList": // 查看已有公会列表
 			ret, err := api.AllianceList()
 			if err != nil {
@@ -95,34 +104,50 @@ func (c *Conn) dispatch(content string) (string, int) {
 			}
 			retString = ret
 		case "createAlliance": // 创建公会
-			err := api.CreateAlliance(c.userAccount, stringSlice[1])
-			if err != nil {
-				log.Println("create alliance failed, err:", err)
+			if length != 2 {
 				code = 5
+			} else {
+				err := api.CreateAlliance(c.userAccount, stringSlice[1])
+				if err != nil {
+					log.Println("create alliance failed, err:", err)
+					code = 5
+				}
+				retString = "创建公会成功"
 			}
-			retString = "创建公会成功"
 		case "joinAlliance": // 加入公会
-			err := api.JoinAlliance(c.userAccount, stringSlice[1])
-			if err != nil {
-				log.Println("join alliance failed, err:", err)
+			if length != 2 {
 				code = 6
+			} else {
+				err := api.JoinAlliance(c.userAccount, stringSlice[1])
+				if err != nil {
+					log.Println("join alliance failed, err:", err)
+					code = 6
+				}
+				retString = "加入公会成功"
 			}
-			retString = "加入公会成功"
 		case "dismissAlliance": // 解散公会
-			err := api.DismissAlliance(c.userAccount)
-			if err != nil {
-				log.Println("leave alliance failed, err:", err)
+			if length != 2 {
 				code = 7
+			} else {
+				err := api.DismissAlliance(c.userAccount)
+				if err != nil {
+					log.Println("leave alliance failed, err:", err)
+					code = 7
+				}
+				retString = "解散公会成功"
 			}
-			retString = "解散公会成功"
 		case "destroyItem": // 销毁公会物品
-			num, _ := strconv.Atoi(stringSlice[1])
-			err := api.DestroyItem(c.userAccount, num)
-			if err != nil {
-				log.Println("destroy alliance item failed, err:", err)
+			if length != 2 {
 				code = 8
+			} else {
+				num, _ := strconv.Atoi(stringSlice[1])
+				err := api.DestroyItem(c.userAccount, num)
+				if err != nil {
+					log.Println("destroy alliance item failed, err:", err)
+					code = 8
+				}
+				retString = "删除物品成功"
 			}
-			retString = "删除物品成功"
 		case "clearup": // 整理公会物品
 			err := api.TidyItems(c.userAccount)
 			if err != nil {
@@ -131,14 +156,18 @@ func (c *Conn) dispatch(content string) (string, int) {
 			}
 			retString = "clearup alliance ok!"
 		case "storeItem": // 提交公会物品
-			id, _ := strconv.Atoi(stringSlice[1])
-			num, _ := strconv.Atoi(stringSlice[2])
-			err := api.CommitItem(c.userAccount, id, num)
-			if err != nil {
-				log.Println("commit item failed, err:", err)
+			if length != 3 {
 				code = 10
+			} else {
+				id, _ := strconv.Atoi(stringSlice[1])
+				num, _ := strconv.Atoi(stringSlice[2])
+				err := api.CommitItem(c.userAccount, id, num)
+				if err != nil {
+					log.Println("commit item failed, err:", err)
+					code = 10
+				}
+				retString = "提交物品成功"
 			}
-			retString = "提交物品成功"
 		case "increaseCapacity": // 扩容公会仓库
 			err := api.IncreaseCapacity(c.userAccount)
 			if err != nil {
