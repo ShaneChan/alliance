@@ -33,6 +33,7 @@ docker run -t -i --net=host alliance_alliance_client的容器id
 以上三条命令中都有一个参数 --net=host ，这个参数的意思是以宿主机模式启动容器服务，容器可以使用宿主机的网络ip地址和端口，这样可以实现多容器之间的互联
 ## 具体操作
 在经过上面几个步骤之后所有服务都成功启动，接下来可以在客户端输入命令开始操作了，客户端有以下命令可用:
+
 1.注册并登录: register accountName password
  
 2.登录: login accountName password
