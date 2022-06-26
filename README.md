@@ -34,14 +34,25 @@ docker run -t -i --net=host alliance_alliance_client的容器id
 ## 具体操作
 在经过上面几个步骤之后所有服务都成功启动，接下来可以在客户端输入命令开始操作了，客户端有以下命令可用:
 1.注册并登录: register accountName password
+ 
 2.登录: login accountName password
+ 
 3.查看自己的公会信息: whichAlliance
-4.查看当前所有公会: allianceList
+ 
+4.查看当前所有公会: allianceList 
+ 
 5.创建公会: createAlliance allianceName
-6.加入公会: joinAlliance allianceName
+ 
+6.加入公会: joinAlliance allianceName 
+ 
 7.解散公会: dismissAlliance
+ 
 8.查看公会物品: allianceItems
-9.提交公会物品: storeItem itemType itemNum
-10.扩容公会仓库: increaseCapacity
-11.销毁公会物品: destroyItem index
+ 
+9.提交公会物品: storeItem itemType itemNum 
+
+10.扩容公会仓库: increaseCapacity 
+ 
+11.销毁公会物品: destroyItem index 
+
 上面几个命令会检测参数个数，如果数量不对，会返回失败
