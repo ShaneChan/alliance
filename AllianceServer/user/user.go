@@ -143,7 +143,7 @@ func (c *Conn) dispatch(content string) (string, int) {
 					code = 8
 				}
 				retString = "删除物品成功"
-			
+			}
 		case "clearup": // 整理公会物品
 			err := api.TidyItems(c.userAccount)
 			if err != nil {
