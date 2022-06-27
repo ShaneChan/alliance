@@ -27,7 +27,8 @@ docker run -d --net=host mongo的容器id
 ```bash
 docker run -i -t --net=host alliance_alliance_server的容器id
 ```
-（alliance_alliance_server容器启动时间可能会比较长，因为服务器在启动的过程中需要拉一些golang的依赖）
+（alliance_alliance_server容器启动时间可能会比较长，因为服务器在启动的过程中需要拉一些golang的依赖，启动成功如下图所示）
+![图片](/images/20220627-110415.jpg)
 ```bash
 docker run -i -t --net=host alliance_alliance_client的容器id
 ```
