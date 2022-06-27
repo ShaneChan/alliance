@@ -2,11 +2,9 @@ version: '3'
 services:
   alliance_server:
     build: ./AllianceServer
-    ports:
-      - "12345:12345"
+    network_mode: "host"
   alliance_client:
     build: ./AllianceClient
   mongo:
     image: "mongo"
-    ports:
-      - "27017:27017"
+    network_mode: "host"
