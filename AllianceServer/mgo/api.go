@@ -4,6 +4,7 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"log"
 	"time"
 )
 
@@ -15,6 +16,7 @@ type Test struct {
 func InsertOne(db string, table string, document interface{}, opts ...*options.InsertOneOptions) (*mongo.InsertOneResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
+		log.Println("连接数据库报错，msg: ", err)
 		return nil, err
 	}
 
@@ -26,6 +28,7 @@ func InsertOne(db string, table string, document interface{}, opts ...*options.I
 func InsertMany(db string, table string, documents []interface{}, opts ...*options.InsertManyOptions) (*mongo.InsertManyResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
+		log.Println("连接数据库报错，msg: ", err)
 		return nil, err
 	}
 
@@ -37,6 +40,7 @@ func InsertMany(db string, table string, documents []interface{}, opts ...*optio
 func DeleteOne(db string, table string, filter interface{}, opts ...*options.DeleteOptions) (*mongo.DeleteResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
+		log.Println("连接数据库报错，msg: ", err)
 		return nil, err
 	}
 
@@ -48,6 +52,8 @@ func DeleteOne(db string, table string, filter interface{}, opts ...*options.Del
 func DeleteMany(db string, table string, filter interface{}, opts ...*options.DeleteOptions) (*mongo.DeleteResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
+		log.Println("连接数据库报错，msg: ", err)
+
 		return nil, err
 	}
 
@@ -59,6 +65,8 @@ func DeleteMany(db string, table string, filter interface{}, opts ...*options.De
 func UpdateOne(db string, table string, filter interface{}, update interface{}, opts ...*options.UpdateOptions) (*mongo.UpdateResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
+		log.Println("连接数据库报错，msg: ", err)
+
 		return nil, err
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -69,6 +77,8 @@ func UpdateOne(db string, table string, filter interface{}, update interface{}, 
 func UpdateMany(db string, table string, filter interface{}, update interface{}, opts ...*options.UpdateOptions) (*mongo.UpdateResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
+		log.Println("连接数据库报错，msg: ", err)
+
 		return nil, err
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -79,6 +89,8 @@ func UpdateMany(db string, table string, filter interface{}, update interface{},
 func Find(db string, table string, filter interface{}, opts ...*options.FindOptions) (*mongo.Cursor, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
+		log.Println("连接数据库报错，msg: ", err)
+
 		return nil, err
 	}
 
@@ -90,6 +102,7 @@ func Find(db string, table string, filter interface{}, opts ...*options.FindOpti
 func FindOne(db string, table string, filter interface{}, opts ...*options.FindOneOptions) (*mongo.SingleResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
+		log.Println("连接数据库报错，msg: ", err)
 		return nil, err
 	}
 
@@ -101,6 +114,8 @@ func FindOne(db string, table string, filter interface{}, opts ...*options.FindO
 func FindOneAndUpdate(db, table string, filter interface{}, update interface{}, opts ...*options.FindOneAndUpdateOptions) (*mongo.SingleResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
+		log.Println("连接数据库报错，msg: ", err)
+
 		return nil, err
 	}
 
@@ -112,6 +127,8 @@ func FindOneAndUpdate(db, table string, filter interface{}, update interface{}, 
 func CountDocuments(db string, table string, filter interface{}, opts ...*options.CountOptions) (int64, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
+		log.Println("连接数据库报错，msg: ", err)
+
 		return 0, err
 	}
 
