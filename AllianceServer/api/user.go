@@ -33,3 +33,7 @@ func Login(account string, password string) error {
 
 	return nil
 }
+
+func Unregister(account string, password string) error {
+	return nil
+}
