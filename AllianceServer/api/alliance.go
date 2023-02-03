@@ -36,8 +36,10 @@ func WhichAlliance(userAccount string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	var result bson.M
 	err = cur.Decode(&result)
+
 	if err != nil {
 		return "", err
 	}
@@ -81,6 +83,7 @@ func CreateAlliance(userAccount string, alliance string) error {
 		return err
 	}
 	err = JoinAlliance(userAccount, alliance)
+
 	return err
 }
 
@@ -91,6 +94,7 @@ func JoinAlliance(userAccount string, alliance string) error {
 	if OldAllianceName != "" {
 		return errors.New("already have alliance")
 	}
+
 	_, err := mgo.UpdateOne("testing", "user", bson.M{"account": userAccount}, bson.M{"$set": bson.M{"allianceName": alliance}}, options.Update().SetUpsert(true))
 
 	return err
