@@ -58,7 +58,7 @@ func (c *Conn) DealConnection() {
 // 消息分发
 func (c *Conn) dispatch(content string) (string, int) {
 	stringSlice := util.DealString(content)
-	code := 0
+	code := predefine.SUCCESS
 	var retString string
 	length := len(stringSlice)
 	if !c.isLogin && !(stringSlice[0] == "login" || stringSlice[0] == "register") {
@@ -67,17 +67,17 @@ func (c *Conn) dispatch(content string) (string, int) {
 		switch stringSlice[0] {
 		case "register": // 注册并登录
 			if length != 3 {
-				code = 2
+				code = predefine.REGISTER_FAILED
 			} else {
 				err := api.Register(stringSlice[1], stringSlice[2])
 				if err != nil {
 					log.Println("register failed, err:", err)
-					code = 2
+					code = predefine.REGISTER_FAILED
 				}
 				err = api.Login(stringSlice[1], stringSlice[2])
 				if err != nil {
 					log.Println("login failed, err:", err)
-					code = 3
+					code = predefine.LOGIN_FAILED
 				}
 				c.isLogin = true
 				c.userAccount = stringSlice[1]
@@ -85,12 +85,12 @@ func (c *Conn) dispatch(content string) (string, int) {
 			}
 		case "login": // 登录
 			if length != 3 {
-				code = 3
+				code = predefine.LOGIN_FAILED
 			} else {
 				err := api.Login(stringSlice[1], stringSlice[2])
 				if err != nil {
 					log.Println("login failed, err:", err)
-					code = 3
+					code = predefine.LOGIN_FAILED
 				}
 				c.isLogin = true
 				c.userAccount = stringSlice[1]
@@ -100,28 +100,28 @@ func (c *Conn) dispatch(content string) (string, int) {
 			ret, err := api.AllianceList()
 			if err != nil {
 				log.Println("get alliance list failed, err:", err)
-				code = 4
+				code = predefine.GET_ALLIANCE_LIST_FALIED
 			}
 			retString = ret
 		case "createAlliance": // 创建公会
 			if length != 2 {
-				code = 5
+				code = predefine.CREATE_ALLIANCE_FAILED
 			} else {
 				err := api.CreateAlliance(c.userAccount, stringSlice[1])
 				if err != nil {
 					log.Println("create alliance failed, err:", err)
-					code = 5
+					code = predefine.GET_ALLIANCE_LIST_FALIED
 				}
 				retString = "创建公会成功"
 			}
 		case "joinAlliance": // 加入公会
 			if length != 2 {
-				code = 6
+				code = predefine.JOIN_ALLIANCE_FALIED
 			} else {
 				err := api.JoinAlliance(c.userAccount, stringSlice[1])
 				if err != nil {
 					log.Println("join alliance failed, err:", err)
-					code = 6
+					code = predefine.JOIN_ALLIANCE_FALIED
 				}
 				retString = "加入公会成功"
 			}
@@ -129,18 +129,18 @@ func (c *Conn) dispatch(content string) (string, int) {
 			err := api.DismissAlliance(c.userAccount)
 			if err != nil {
 				log.Println("leave alliance failed, err:", err)
-				code = 7
+				code = predefine.LEAVE_ALLIANCE_FALILED
 			}
 			retString = "解散公会成功"
 		case "destroyItem": // 销毁公会物品
 			if length != 2 {
-				code = 8
+				code = predefine.DESTROY_ALLIANCE_ITEM_FALIED
 			} else {
 				num, _ := strconv.Atoi(stringSlice[1])
 				err := api.DestroyItem(c.userAccount, num)
 				if err != nil {
 					log.Println("destroy alliance item failed, err:", err)
-					code = 8
+					code = predefine.DESTROY_ALLIANCE_ITEM_FALIED
 				}
 				retString = "删除物品成功"
 			}
@@ -148,19 +148,19 @@ func (c *Conn) dispatch(content string) (string, int) {
 			err := api.TidyItems(c.userAccount)
 			if err != nil {
 				log.Println("tidy alliance item failed, err:", err)
-				code = 9
+				code = predefine.TIDY_ALLIANCE_ITEM_FALIED
 			}
 			retString = "clearup alliance ok!"
 		case "storeItem": // 提交公会物品
 			if length != 3 {
-				code = 10
+				code = predefine.COMMIT_ALLIANCE_ITEM_FALIED
 			} else {
 				id, _ := strconv.Atoi(stringSlice[1])
 				num, _ := strconv.Atoi(stringSlice[2])
 				err := api.CommitItem(c.userAccount, id, num)
 				if err != nil {
 					log.Println("commit item failed, err:", err)
-					code = 10
+					code = predefine.COMMIT_ALLIANCE_ITEM_FALIED
 				}
 				retString = "提交物品成功"
 			}
@@ -168,7 +168,7 @@ func (c *Conn) dispatch(content string) (string, int) {
 			err := api.IncreaseCapacity(c.userAccount)
 			if err != nil {
 				log.Println("increase capacity failed, err:", err)
-				code = 11
+				code = predefine.INCREASE_ALLIANCE_CAPACITY_FALILED
 			}
 			retString = "扩容公会仓库成功"
 		case "whichAlliance": // 查看自己的公会信息
@@ -188,8 +188,9 @@ func (c *Conn) dispatch(content string) (string, int) {
 		}
 	}
 
-	if code != 0 {
+	if code != predefine.SUCCESS {
 		retString = predefine.GetMsg(code)
 	}
+
 	return retString, code
 }
