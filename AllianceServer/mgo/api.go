@@ -8,11 +8,6 @@ import (
 	"time"
 )
 
-type Test struct {
-	Name string
-	Age  int
-}
-
 func InsertOne(db string, table string, document interface{}, opts ...*options.InsertOneOptions) (*mongo.InsertOneResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
