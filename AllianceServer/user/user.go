@@ -18,7 +18,7 @@ type Conn struct {
 	userAccount string       // 玩家账号
 }
 
-// 新建连接
+// NewConnection 新建连接
 func NewConnection(conn *net.TCPConn) *Conn {
 	return &Conn{
 		conn:        conn,
@@ -27,7 +27,7 @@ func NewConnection(conn *net.TCPConn) *Conn {
 	}
 }
 
-// 处理连接
+// DealConnection 处理连接
 func (c *Conn) DealConnection() {
 	defer func() {
 		_ = c.conn.Close()
@@ -44,7 +44,7 @@ func (c *Conn) DealConnection() {
 		} // 读取真正的数据
 		content := string(data)
 		log.Println("receive data: ", content)
-		retContent, _ := c.dispatch(content) // 指令分发
+		retContent, _ := c.Dispatch(content) // 指令分发
 		retLength := len(retContent)
 		buf := new(bytes.Buffer)
 		err := binary.Write(buf, binary.LittleEndian, int32(retLength)) // 执行结果返回
@@ -55,8 +55,8 @@ func (c *Conn) DealConnection() {
 	}
 }
 
-// 消息分发
-func (c *Conn) dispatch(content string) (string, int) {
+// Dispatch 消息分发
+func (c *Conn) Dispatch(content string) (string, int) {
 	stringSlice := util.DealString(content)
 	code := predefine.SUCCESS
 	var retString string
@@ -66,23 +66,9 @@ func (c *Conn) dispatch(content string) (string, int) {
 	} else {
 		switch stringSlice[0] {
 		case "register": // 注册并登录
-			if length != 3 {
-				code = predefine.REGISTER_FAILED
-			} else {
-				err := api.Register(stringSlice[1], stringSlice[2])
-				if err != nil {
-					log.Println("register failed, err:", err)
-					code = predefine.REGISTER_FAILED
-				}
-				err = api.Login(stringSlice[1], stringSlice[2])
-				if err != nil {
-					log.Println("login failed, err:", err)
-					code = predefine.LOGIN_FAILED
-				}
-				c.isLogin = true
-				c.userAccount = stringSlice[1]
-				retString = "注册并登录成功"
-			}
+			register(content)
+			c.isLogin = true
+			c.userAccount = stringSlice[1]
 		case "login": // 登录
 			if length != 3 {
 				code = predefine.LOGIN_FAILED
@@ -193,4 +179,73 @@ func (c *Conn) dispatch(content string) (string, int) {
 	}
 
 	return retString, code
+}
+
+func register(content string) (string, int) {
+	stringSlice := util.DealString(content)
+	length := len(stringSlice)
+	var code int
+	var retString string
+
+	if length != 3 {
+		code = predefine.REGISTER_FAILED
+	} else {
+		err := api.Register(stringSlice[1], stringSlice[2])
+		if err != nil {
+			log.Println("register failed, err:", err)
+			code = predefine.REGISTER_FAILED
+		}
+		err = api.Login(stringSlice[1], stringSlice[2])
+		if err != nil {
+			log.Println("login failed, err:", err)
+			code = predefine.LOGIN_FAILED
+		}
+		retString = "注册并登录成功"
+	}
+
+	return retString, code
+}
+
+func login() {
+
+}
+
+func allianceList() {
+
+}
+
+func createAlliance() {
+
+}
+
+func joinAlliance() {
+
+}
+
+func dismissAlliance() {
+
+}
+
+func destroyItem() {
+
+}
+
+func clearup() {
+
+}
+
+func storeItem() {
+
+}
+
+func increaseCapacity() {
+
+}
+
+func whichAlliance() {
+
+}
+
+func allianceItems() {
+
 }
