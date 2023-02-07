@@ -66,29 +66,15 @@ func (c *Conn) Dispatch(content string) (string, int) {
 	} else {
 		switch stringSlice[0] {
 		case "register": // 注册并登录
-			register(content)
+			retString, code = register(content)
 			c.isLogin = true
 			c.userAccount = stringSlice[1]
 		case "login": // 登录
-			if length != 3 {
-				code = predefine.LOGIN_FAILED
-			} else {
-				err := api.Login(stringSlice[1], stringSlice[2])
-				if err != nil {
-					log.Println("login failed, err:", err)
-					code = predefine.LOGIN_FAILED
-				}
-				c.isLogin = true
-				c.userAccount = stringSlice[1]
-				retString = "登录成功"
-			}
+			retString, code = login(content)
+			c.isLogin = true
+			c.userAccount = stringSlice[1]
 		case "allianceList": // 查看已有公会列表
-			ret, err := api.AllianceList()
-			if err != nil {
-				log.Println("get alliance list failed, err:", err)
-				code = predefine.GET_ALLIANCE_LIST_FALIED
-			}
-			retString = ret
+			retString, code = allianceList()
 		case "createAlliance": // 创建公会
 			if length != 2 {
 				code = predefine.CREATE_ALLIANCE_FAILED
@@ -206,11 +192,37 @@ func register(content string) (string, int) {
 	return retString, code
 }
 
-func login() {
+func login(content string) (string, int) {
+	stringSlice := util.DealString(content)
+	length := len(stringSlice)
+	var code int
+	var retString string
 
+	if length != 3 {
+		code = predefine.LOGIN_FAILED
+	} else {
+		err := api.Login(stringSlice[1], stringSlice[2])
+		if err != nil {
+			log.Println("login failed, err:", err)
+			code = predefine.LOGIN_FAILED
+		}
+		retString = "登录成功"
+	}
+
+	return retString, code
 }
 
-func allianceList() {
+func allianceList() (string, int) {
+	var code int
+	var retString string
+	ret, err := api.AllianceList()
+	if err != nil {
+		log.Println("get alliance list failed, err:", err)
+		code = predefine.GET_ALLIANCE_LIST_FALIED
+	}
+	retString = ret
+
+	return retString, code
 
 }
 
