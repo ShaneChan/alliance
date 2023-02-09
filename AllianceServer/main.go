@@ -2,26 +2,25 @@ package main
 
 import (
 	_ "AllianceServer/mgo"
+	"AllianceServer/predefine"
 	"AllianceServer/user"
-	"fmt"
 	"log"
 	"net"
 )
 
 func main() {
-	ip := "127.0.0.1"
-	port := 12345
-	addr, err := net.ResolveTCPAddr("tcp4", fmt.Sprintf("%s:%d", ip, port))
+	ipAddr, err := net.ResolveTCPAddr("tcp4", predefine.Cfg["ipaddress"])
+
 	if err != nil {
 		log.Fatal("resolve tcp address error: ", err)
 	}
 
-	listener, err := net.ListenTCP("tcp4", addr)
+	listener, err := net.ListenTCP("tcp4", ipAddr)
 	if err != nil {
 		log.Fatalln("listener error: ", err)
 	}
 
-	log.Println("listen ok on ", addr)
+	log.Println("listen ok on ", ipAddr)
 	for true { // 主协程监听，来了新连接分发到新的协程去处理
 		conn, err := listener.AcceptTCP()
 		if err != nil {
