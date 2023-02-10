@@ -1,6 +1,7 @@
 package util
 
 import (
+	"math/rand"
 	"strings"
 )
 
@@ -24,6 +25,9 @@ func Min(a int, b int) int {
 	return b
 }
 
-func Random() {
+func RandomInt() int {
+	return rand.Int()
+}
 
+func RandomIntBetween() {
 }
