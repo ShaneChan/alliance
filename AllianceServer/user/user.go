@@ -95,6 +95,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 					log.Println("join alliance failed, err:", err)
 					code = predefine.JOIN_ALLIANCE_FALIED
 				}
+
 				retString = "加入公会成功"
 			}
 		case "dismissAlliance": // 解散公会
@@ -103,6 +104,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 				log.Println("leave alliance failed, err:", err)
 				code = predefine.LEAVE_ALLIANCE_FALILED
 			}
+
 			retString = "解散公会成功"
 		case "destroyItem": // 销毁公会物品
 			if length != 2 {
@@ -114,6 +116,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 					log.Println("destroy alliance item failed, err:", err)
 					code = predefine.DESTROY_ALLIANCE_ITEM_FALIED
 				}
+
 				retString = "删除物品成功"
 			}
 		case "clearup": // 整理公会物品
@@ -122,6 +125,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 				log.Println("tidy alliance item failed, err:", err)
 				code = predefine.TIDY_ALLIANCE_ITEM_FALIED
 			}
+
 			retString = "clearup alliance ok!"
 		case "storeItem": // 提交公会物品
 			if length != 3 {
@@ -134,6 +138,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 					log.Println("commit item failed, err:", err)
 					code = predefine.COMMIT_ALLIANCE_ITEM_FALIED
 				}
+
 				retString = "提交物品成功"
 			}
 		case "increaseCapacity": // 扩容公会仓库
@@ -142,18 +147,21 @@ func (c *Conn) Dispatch(content string) (string, int) {
 				log.Println("increase capacity failed, err:", err)
 				code = predefine.INCREASE_ALLIANCE_CAPACITY_FALILED
 			}
+
 			retString = "扩容公会仓库成功"
 		case "whichAlliance": // 查看自己的公会信息
 			ret, err := api.WhichAlliance(c.userAccount)
 			if err != nil {
 				log.Println("which alliance failed, err:", err)
 			}
+
 			retString = ret
 		case "allianceItems": // 查看公会物品信息
 			ret, err := api.AllianceItems(c.userAccount)
 			if err != nil {
 				log.Println("alliance items failed, err:", err)
 			}
+
 			retString = ret
 		default:
 			retString = "no command"
