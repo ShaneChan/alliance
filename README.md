@@ -58,4 +58,6 @@ docker run -i -t --net=host alliance_alliance_client的容器id
  
 11.销毁公会物品: destroyItem index 
 
+12.缩容公会仓库: decreaseCapacity
+
 上面几个命令会检测参数个数，如果数量不对，会返回失败
