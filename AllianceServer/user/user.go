@@ -200,6 +200,7 @@ func register(content string) (string, int) {
 	return retString, code
 }
 
+// login 登陆
 func login(content string) (string, int) {
 	stringSlice := util.DealString(content)
 	length := len(stringSlice)
@@ -220,6 +221,7 @@ func login(content string) (string, int) {
 	return retString, code
 }
 
+// allianceList 联盟列表
 func allianceList() (string, int) {
 	var code int
 	var retString string
@@ -234,38 +236,47 @@ func allianceList() (string, int) {
 
 }
 
+// createAlliance 创建联盟
 func createAlliance() {
 
 }
 
+// joinAlliance 加入联盟
 func joinAlliance() {
 
 }
 
+// dismissAlliance 解散联盟
 func dismissAlliance() {
 
 }
 
+// destroyItem 销毁物品
 func destroyItem() {
 
 }
 
+// clearup 清理仓库
 func clearup() {
 
 }
 
+// storeItem 存储物品
 func storeItem() {
 
 }
 
+// increaseCapacity 仓库扩容
 func increaseCapacity() {
 
 }
 
+// whichAlliance 查看联盟信息
 func whichAlliance() {
 
 }
 
+// allianceItems 查看联盟物品
 func allianceItems() {
 
 }
