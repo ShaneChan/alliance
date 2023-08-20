@@ -2,16 +2,16 @@ package predefine
 
 const (
 	SUCCESS int = iota
-	NOT_LOGIN
-	REGISTER_FAILED
-	LOGIN_FAILED
-	GET_ALLIANCE_LIST_FALIED
-	CREATE_ALLIANCE_FAILED
-	JOIN_ALLIANCE_FALIED
-	LEAVE_ALLIANCE_FALILED
-	DESTROY_ALLIANCE_ITEM_FALIED
-	TIDY_ALLIANCE_ITEM_FALIED
-	COMMIT_ALLIANCE_ITEM_FALIED
-	INCREASE_ALLIANCE_CAPACITY_FALILED
-	COMMON_FAILED
+	NotLogin
+	RegisterFailed
+	LoginFailed
+	GetAllianceListFalied
+	CreateAllianceFailed
+	JoinAllianceFalied
+	LeaveAllianceFaliled
+	DestroyAllianceItemFalied
+	TidyAllianceItemFalied
+	CommitAllianceItemFalied
+	IncreaseAllianceCapacityFaliled
+	CommonFailed
 )
