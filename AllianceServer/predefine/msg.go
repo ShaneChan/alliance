@@ -13,6 +13,7 @@ var MsgFlags = map[int]string{
 	TIDY_ALLIANCE_ITEM_FALIED:          "整理公会物品失败",
 	COMMIT_ALLIANCE_ITEM_FALIED:        "提交公会物品失败",
 	INCREASE_ALLIANCE_CAPACITY_FALILED: "扩容公会仓库失败",
+	COMMON_FAILED:                      "通用失败",
 }
 
 func GetMsg(code int) string {
