@@ -163,7 +163,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 			}
 
 			retString = ret
-		default:
+		default: // 默认情况不做任何处理
 			retString = "no command"
 		}
 	}
