@@ -230,6 +230,7 @@ func allianceList() (string, int) {
 		log.Println("get alliance list failed, err:", err)
 		code = predefine.GetAllianceListFalied
 	}
+
 	retString = ret
 
 	return retString, code
