@@ -15,7 +15,7 @@ import (
 
 // ======================= api =======================
 
-// 查询公会列表
+// AllianceList 查询公会列表
 func AllianceList() (ret string, err error) {
 	cur, err := mgo.Find("testing", "alliance", bson.M{})
 	if err != nil {
@@ -61,7 +61,7 @@ func WhichAlliance(userAccount string) (string, error) {
 	return ret, nil
 }
 
-// 创建公会
+// CreateAlliance 创建公会
 func CreateAlliance(userAccount string, alliance string) error {
 	allianceName, _ := allianceName(alliance)
 
@@ -69,7 +69,7 @@ func CreateAlliance(userAccount string, alliance string) error {
 		return errors.New("already have alliance")
 	}
 
-	items := []bson.M{}
+	var items []bson.M
 	for i := 1; i <= 5; i++ { // 初始化五种道具，数量都是1
 		items = append(items, bson.M{"id": i, "name": "道具" + strconv.Itoa(i), "itemType": i, "number": 1})
 	}
@@ -87,7 +87,7 @@ func CreateAlliance(userAccount string, alliance string) error {
 	return err
 }
 
-// 加入公会
+// JoinAlliance 加入公会
 func JoinAlliance(userAccount string, alliance string) error {
 	OldAllianceName, _ := allianceName(userAccount)
 
@@ -100,7 +100,7 @@ func JoinAlliance(userAccount string, alliance string) error {
 	return err
 }
 
-// 解散公会（验证会长）
+// DismissAlliance 解散公会（验证会长）
 func DismissAlliance(userAccount string) error {
 	allianceName, err := allianceName(userAccount)
 	if err != nil {
@@ -121,7 +121,7 @@ func DismissAlliance(userAccount string) error {
 	return err
 }
 
-// 提交物品
+// CommitItem 提交物品
 func CommitItem(userAccount string, id int, num int) error {
 	allianceName, err := allianceName(userAccount)
 	if err != nil {
@@ -138,7 +138,7 @@ func CommitItem(userAccount string, id int, num int) error {
 	}
 
 	transResult := result["items"].(bson.A)
-	newResult := []bson.M{}
+	var newResult []bson.M
 	isOK := false
 	for _, v := range transResult {
 		v1 := v.(bson.M)
@@ -169,7 +169,7 @@ func CommitItem(userAccount string, id int, num int) error {
 	return nil
 }
 
-// 整理物品
+// TidyItems 整理物品
 func TidyItems(userAccount string) error {
 	allianceName, err := allianceName(userAccount)
 	if err != nil {
@@ -203,7 +203,7 @@ func TidyItems(userAccount string) error {
 
 	var itemTypes []int32
 
-	for k, _ := range statisticsMap {
+	for k := range statisticsMap {
 		itemTypes = append(itemTypes, k)
 	}
 
@@ -231,7 +231,7 @@ func TidyItems(userAccount string) error {
 	return nil
 }
 
-// 扩容公会仓库（验证会长）
+// IncreaseCapacity 扩容公会仓库（验证会长）
 func IncreaseCapacity(userAccount string) error {
 	allianceName, err := allianceName(userAccount)
 	if err != nil {
@@ -260,7 +260,7 @@ func IncreaseCapacity(userAccount string) error {
 	if len(transResult) >= predefine.FINAL_MAX_GRID_NUM {
 		return errors.New("max grid num")
 	}
-	newResult := []bson.M{}
+	var newResult []bson.M
 
 	for _, v := range transResult {
 		newResult = append(newResult, v.(bson.M))
@@ -277,7 +277,7 @@ func IncreaseCapacity(userAccount string) error {
 	return nil
 }
 
-// 销毁格子物品（验证会长）
+// DestroyItem 销毁格子物品（验证会长）
 func DestroyItem(userAccount string, index int) error {
 	allianceName, err := allianceName(userAccount)
 	if err != nil {
@@ -298,7 +298,7 @@ func DestroyItem(userAccount string, index int) error {
 	if leader != userAccount {
 		return errors.New("not leader")
 	}
-	newResult := []bson.M{}
+	var newResult []bson.M
 	if index < 1 || index > len(transResult) {
 		return errors.New("index error")
 	}
@@ -317,7 +317,7 @@ func DestroyItem(userAccount string, index int) error {
 	return nil
 }
 
-// 查看公会物品
+// AllianceItems 查看公会物品
 func AllianceItems(userAccount string) (string, error) {
 	allianceName, err := allianceName(userAccount)
 	if err != nil {
