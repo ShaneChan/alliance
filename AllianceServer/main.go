@@ -32,6 +32,7 @@ func main() {
 		}
 		log.Println("accept new connection, remote address: ", conn.RemoteAddr().String())
 
+		// 请求路由到新的协程去处理
 		go user.NewConnection(conn).DealConnection()
 	}
 }
