@@ -247,6 +247,11 @@ func joinAlliance() {
 
 }
 
+// 离开联盟
+func leaveAlliance() {
+
+}
+
 // dismissAlliance 解散联盟
 func dismissAlliance() {
 
