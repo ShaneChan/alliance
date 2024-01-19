@@ -216,6 +216,7 @@ func login(content string) (string, int) {
 			code = predefine.LoginFailed
 		}
 		retString = "登录成功"
+		retString = "登录成功"
 	}
 
 	return retString, code
