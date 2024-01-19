@@ -200,7 +200,7 @@ func register(content string) (string, int) {
 	return retString, code
 }
 
-// login 登陆
+// login 登陆（添加注释测试）
 func login(content string) (string, int) {
 	stringSlice := util.DealString(content)
 	length := len(stringSlice)
