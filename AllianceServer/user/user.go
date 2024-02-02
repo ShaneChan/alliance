@@ -175,6 +175,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 	return retString, code
 }
 
+// register 注册
 func register(content string) (string, int) {
 	stringSlice := util.DealString(content)
 	length := len(stringSlice)
@@ -247,7 +248,7 @@ func joinAlliance() {
 
 }
 
-// 离开联盟
+// leaveAlliance 离开联盟
 func leaveAlliance() {
 
 }
