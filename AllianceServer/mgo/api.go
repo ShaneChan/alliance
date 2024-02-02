@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// InsertOne 插入一个document
 func InsertOne(db string, table string, document interface{}, opts ...*options.InsertOneOptions) (*mongo.InsertOneResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
@@ -20,6 +21,7 @@ func InsertOne(db string, table string, document interface{}, opts ...*options.I
 	return col.InsertOne(ctx, document, opts...)
 }
 
+// InsertMany 插入多个document
 func InsertMany(db string, table string, documents []interface{}, opts ...*options.InsertManyOptions) (*mongo.InsertManyResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
@@ -32,6 +34,7 @@ func InsertMany(db string, table string, documents []interface{}, opts ...*optio
 	return col.InsertMany(ctx, documents, opts...)
 }
 
+// DeleteOne 删除一个document
 func DeleteOne(db string, table string, filter interface{}, opts ...*options.DeleteOptions) (*mongo.DeleteResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
@@ -44,6 +47,7 @@ func DeleteOne(db string, table string, filter interface{}, opts ...*options.Del
 	return col.DeleteOne(ctx, filter, opts...)
 }
 
+// DeleteMany 删除多个document
 func DeleteMany(db string, table string, filter interface{}, opts ...*options.DeleteOptions) (*mongo.DeleteResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
@@ -57,6 +61,7 @@ func DeleteMany(db string, table string, filter interface{}, opts ...*options.De
 	return col.DeleteMany(ctx, filter, opts...)
 }
 
+// UpdateOne 更新一个document
 func UpdateOne(db string, table string, filter interface{}, update interface{}, opts ...*options.UpdateOptions) (*mongo.UpdateResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
@@ -69,6 +74,7 @@ func UpdateOne(db string, table string, filter interface{}, update interface{}, 
 	return col.UpdateOne(ctx, filter, update, opts...)
 }
 
+// UpdateMany 更新多个document
 func UpdateMany(db string, table string, filter interface{}, update interface{}, opts ...*options.UpdateOptions) (*mongo.UpdateResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
@@ -81,6 +87,7 @@ func UpdateMany(db string, table string, filter interface{}, update interface{},
 	return col.UpdateMany(ctx, filter, update, opts...)
 }
 
+// Find 查找多个document
 func Find(db string, table string, filter interface{}, opts ...*options.FindOptions) (*mongo.Cursor, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
@@ -94,6 +101,7 @@ func Find(db string, table string, filter interface{}, opts ...*options.FindOpti
 	return col.Find(ctx, filter, opts...)
 }
 
+// FindOne 查找一个document
 func FindOne(db string, table string, filter interface{}, opts ...*options.FindOneOptions) (*mongo.SingleResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
@@ -106,6 +114,7 @@ func FindOne(db string, table string, filter interface{}, opts ...*options.FindO
 	return col.FindOne(ctx, filter, opts...), nil
 }
 
+// FindOneAndUpdate 查找并更新一个document
 func FindOneAndUpdate(db, table string, filter interface{}, update interface{}, opts ...*options.FindOneAndUpdateOptions) (*mongo.SingleResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
@@ -119,6 +128,7 @@ func FindOneAndUpdate(db, table string, filter interface{}, update interface{}, 
 	return col.FindOneAndUpdate(ctx, filter, update, opts...), nil
 }
 
+// CountDocuments 获得document数量
 func CountDocuments(db string, table string, filter interface{}, opts ...*options.CountOptions) (int64, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
