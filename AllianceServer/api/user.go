@@ -6,6 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
+// Register 注册
 func Register(account string, password string) error {
 	cur, err := mgo.FindOne("testing", "user", bson.M{"account": account})
 	if err != nil {
@@ -20,6 +21,7 @@ func Register(account string, password string) error {
 	return err
 }
 
+// Login 登录
 func Login(account string, password string) error {
 	cur, err := mgo.FindOne("testing", "user", bson.M{"account": account, "password": password})
 	if err != nil {
@@ -34,6 +36,7 @@ func Login(account string, password string) error {
 	return nil
 }
 
+// Unregister 注销
 func Unregister(account string, password string) error {
 	return nil
 }
