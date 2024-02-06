@@ -33,6 +33,7 @@ func (c *Conn) DealConnection() {
 		_ = c.conn.Close()
 	}()
 	for {
+		// 拆包
 		length := make([]byte, 4) // 长度的字节数固定为4
 		if _, err := io.ReadFull(c.conn, length); err != nil {
 			return
@@ -44,6 +45,8 @@ func (c *Conn) DealConnection() {
 		} // 读取真正的数据
 		content := string(data)
 		log.Println("receive data: ", content)
+
+		// 逻辑处理
 		retContent, _ := c.Dispatch(content) // 指令分发
 		retLength := len(retContent)
 		buf := new(bytes.Buffer)
@@ -201,7 +204,7 @@ func register(content string) (string, int) {
 	return retString, code
 }
 
-// login 登陆（添加注释测试）
+// login 登陆
 func login(content string) (string, int) {
 	stringSlice := util.DealString(content)
 	length := len(stringSlice)
