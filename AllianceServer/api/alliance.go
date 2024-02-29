@@ -345,7 +345,7 @@ func AllianceItems(userAccount string) (string, error) {
 
 // ===================== common =====================
 
-// 获取公会名
+// allianceName 获取公会名
 func allianceName(userAccount string) (string, error) {
 	cur1, err := mgo.FindOne("testing", "user", bson.M{"account": userAccount})
 	if err != nil {
@@ -365,7 +365,7 @@ func allianceName(userAccount string) (string, error) {
 	return allianceName, nil
 }
 
-// 是否是指定公会的会长
+// isLeader 是否是指定公会的会长
 func isLeader(userAccount string, allianceName string) (bool, error) {
 	cur, err := mgo.FindOne("testing", "alliance", bson.M{"allianceName": allianceName})
 	if err != nil {
