@@ -48,7 +48,7 @@ func (c *Conn) DealConnection() {
 
 		// 逻辑处理
 		retContent, _ := c.Dispatch(content) // 指令分发
-		retLength := len(retContent)
+		retLength := len(retContent)         // 计算长度
 		buf := new(bytes.Buffer)
 		err := binary.Write(buf, binary.LittleEndian, int32(retLength)) // 执行结果返回
 		if err != nil {
