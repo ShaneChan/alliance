@@ -44,12 +44,12 @@ func init() {
 	cli, err := mongo.Connect(ctx, option)
 	if err != nil {
 		_ = cli.Disconnect(ctx)
-		log.Fatalln("connect to mongo error")
+		log.Fatalln("connect to mongo error!")
 	}
 
 	if err := cli.Ping(context.Background(), readpref.Primary()); err != nil {
 		_ = cli.Disconnect(ctx)
-		log.Fatalln("ping mongo error")
+		log.Fatalln("ping mongo error!")
 	}
 
 	client = &Client{
