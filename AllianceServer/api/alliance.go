@@ -52,6 +52,10 @@ func WhichAlliance(userAccount string) (string, error) {
 	cur1, err := mgo.Find("testing", "user", bson.M{"allianceName": transResult})
 	ret := "alliance:" + transResult.(string) + "\n" + "members:"
 
+	if err != nil {
+		return ret, err
+	}
+
 	var results []bson.M
 	err = cur1.All(context.Background(), &results)
 	for _, result := range results {
@@ -74,7 +78,7 @@ func CreateAlliance(userAccount string, alliance string) error {
 		items = append(items, bson.M{"id": i, "name": "道具" + strconv.Itoa(i), "itemType": i, "number": 1})
 	}
 
-	for i := 6; i <= predefine.INITIAL_MAX_GRID_NUM; i++ {
+	for i := 6; i <= predefine.InitialMaxGridNum; i++ {
 		items = append(items, bson.M{"id": 0, "name": "道具" + strconv.Itoa(0), "itemType": 0, "number": 0})
 	}
 	_, err := mgo.UpdateOne("testing", "alliance", bson.M{"leader": userAccount},
@@ -143,17 +147,17 @@ func CommitItem(userAccount string, id int, num int) error {
 	for _, v := range transResult {
 		v1 := v.(bson.M)
 		OldNum := int(v1["number"].(int32))
-		if !isOK && int(v1["id"].(int32)) == id && OldNum < predefine.ITEM_MAX_NUM_ONE_GRID {
-			newNumber := util.Min(predefine.ITEM_MAX_NUM_ONE_GRID, OldNum+num)
+		if !isOK && int(v1["id"].(int32)) == id && OldNum < predefine.ItemMaxNumOneGrid {
+			newNumber := util.Min(predefine.ItemMaxNumOneGrid, OldNum+num)
 			v1["number"] = newNumber
 			newResult = append(newResult, v1)
-			num -= predefine.ITEM_MAX_NUM_ONE_GRID - OldNum
+			num -= predefine.ItemMaxNumOneGrid - OldNum
 			if num <= 0 {
 				isOK = true
 			}
 		} else if !isOK && int(v1["id"].(int32)) == 0 {
-			newResult = append(newResult, bson.M{"id": id, "name": "道具" + strconv.Itoa(id), "itemType": id, "number": util.Min(predefine.ITEM_MAX_NUM_ONE_GRID, num)})
-			num -= predefine.ITEM_MAX_NUM_ONE_GRID - OldNum
+			newResult = append(newResult, bson.M{"id": id, "name": "道具" + strconv.Itoa(id), "itemType": id, "number": util.Min(predefine.ItemMaxNumOneGrid, num)})
+			num -= predefine.ItemMaxNumOneGrid - OldNum
 			if num <= 0 {
 				isOK = true
 			}
@@ -257,7 +261,7 @@ func IncreaseCapacity(userAccount string) error {
 	}
 
 	transResult := result["items"].(bson.A)
-	if len(transResult) >= predefine.FINAL_MAX_GRID_NUM {
+	if len(transResult) >= predefine.FinalMaxGridNum {
 		return errors.New("max grid num")
 	}
 	var newResult []bson.M
@@ -266,7 +270,7 @@ func IncreaseCapacity(userAccount string) error {
 		newResult = append(newResult, v.(bson.M))
 	}
 
-	for i := 0; i < predefine.INCREASE_NUM; i++ {
+	for i := 0; i < predefine.IncreaseNum; i++ {
 		newResult = append(newResult, bson.M{"id": 0, "name": "道具" + strconv.Itoa(0), "itemType": 0, "number": 0})
 	}
 

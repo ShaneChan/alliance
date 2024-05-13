@@ -29,7 +29,7 @@ func main() {
 	var length int
 	reader := bufio.NewReader(os.Stdin)
 	go func() {
-		for true {
+		for {
 			input, _ = reader.ReadString('\n')
 			input = strings.TrimSpace(input)
 			length = len(input)
@@ -42,7 +42,7 @@ func main() {
 		}
 	}()
 
-	for true {
+	for {
 		length := make([]byte, 4) // 长度的字节数固定为4
 		if _, err := io.ReadFull(conn, length); err != nil {
 			return
