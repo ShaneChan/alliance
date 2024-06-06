@@ -84,7 +84,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 			} else {
 				err := api.CreateAlliance(c.userAccount, stringSlice[1])
 				if err != nil {
-					log.Println("create alliance failed, err:", err)
+					log.Println("create alliance failed, err: ", err)
 					code = predefine.GetAllianceListFalied
 				}
 				retString = "创建公会成功"
@@ -95,7 +95,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 			} else {
 				err := api.JoinAlliance(c.userAccount, stringSlice[1])
 				if err != nil {
-					log.Println("join alliance failed, err:", err)
+					log.Println("join alliance failed, err: ", err)
 					code = predefine.JoinAllianceFalied
 				}
 
@@ -104,7 +104,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 		case "dismissAlliance": // 解散公会
 			err := api.DismissAlliance(c.userAccount)
 			if err != nil {
-				log.Println("leave alliance failed, err:", err)
+				log.Println("leave alliance failed, err: ", err)
 				code = predefine.LeaveAllianceFaliled
 			}
 
@@ -116,7 +116,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 				num, _ := strconv.Atoi(stringSlice[1])
 				err := api.DestroyItem(c.userAccount, num)
 				if err != nil {
-					log.Println("destroy alliance item failed, err:", err)
+					log.Println("destroy alliance item failed, err: ", err)
 					code = predefine.DestroyAllianceItemFalied
 				}
 
@@ -125,7 +125,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 		case "clearup": // 整理公会物品
 			err := api.TidyItems(c.userAccount)
 			if err != nil {
-				log.Println("tidy alliance item failed, err:", err)
+				log.Println("tidy alliance item failed, err: ", err)
 				code = predefine.TidyAllianceItemFalied
 			}
 
@@ -138,7 +138,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 				num, _ := strconv.Atoi(stringSlice[2])
 				err := api.CommitItem(c.userAccount, id, num)
 				if err != nil {
-					log.Println("commit item failed, err:", err)
+					log.Println("commit item failed, err: ", err)
 					code = predefine.CommitAllianceItemFalied
 				}
 
@@ -147,7 +147,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 		case "increaseCapacity": // 扩容公会仓库
 			err := api.IncreaseCapacity(c.userAccount)
 			if err != nil {
-				log.Println("increase capacity failed, err:", err)
+				log.Println("increase capacity failed, err: ", err)
 				code = predefine.IncreaseAllianceCapacityFaliled
 			}
 
@@ -155,14 +155,14 @@ func (c *Conn) Dispatch(content string) (string, int) {
 		case "whichAlliance": // 查看自己的公会信息
 			ret, err := api.WhichAlliance(c.userAccount)
 			if err != nil {
-				log.Println("which alliance failed, err:", err)
+				log.Println("which alliance failed, err: ", err)
 			}
 
 			retString = ret
 		case "allianceItems": // 查看公会物品信息
 			ret, err := api.AllianceItems(c.userAccount)
 			if err != nil {
-				log.Println("alliance items failed, err:", err)
+				log.Println("alliance items failed, err: ", err)
 			}
 
 			retString = ret
