@@ -30,6 +30,8 @@ func main() {
 		if err != nil {
 			log.Fatalln("accept error: ", err)
 		}
+
+		// 新的连接到来
 		log.Println("accept new connection, remote address: ", conn.RemoteAddr().String())
 
 		// 请求路由到新的协程去处理
