@@ -29,9 +29,11 @@ func NewConnection(conn *net.TCPConn) *Conn {
 
 // DealConnection 处理连接
 func (c *Conn) DealConnection() {
+	// 函数退出关闭连接
 	defer func() {
 		_ = c.conn.Close()
 	}()
+
 	for {
 		// 拆包
 		length := make([]byte, 4) // 长度的字节数固定为4
