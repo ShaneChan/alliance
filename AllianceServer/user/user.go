@@ -66,6 +66,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 	code := predefine.SUCCESS
 	var retString string
 	length := len(stringSlice)
+
 	if !c.isLogin && !(stringSlice[0] == "login" || stringSlice[0] == "register") {
 		code = predefine.NotLogin
 	} else {
