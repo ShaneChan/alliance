@@ -4,11 +4,13 @@ import (
 	_ "AllianceServer/mgo"
 	"AllianceServer/predefine"
 	"AllianceServer/user"
+	"fmt"
 	"log"
 	"net"
 )
 
 func main() {
+	fmt.Println("Alliance Server")
 	ipAddr, err := net.ResolveTCPAddr("tcp4", predefine.Cfg["ipaddress"])
 
 	if err != nil {
