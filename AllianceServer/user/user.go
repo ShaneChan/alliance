@@ -162,7 +162,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 			}
 
 			retString = ret
-		case "allianceItems": // 查看公会物品信息
+		case "allianceItems": // 查看公会的物品信息
 			ret, err := api.AllianceItems(c.userAccount)
 			if err != nil {
 				log.Println("alliance items failed, err: ", err)
