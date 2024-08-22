@@ -53,6 +53,7 @@ func (c *Conn) DealConnection() {
 		retLength := len(retContent)         // 计算长度
 		buf := new(bytes.Buffer)
 		err := binary.Write(buf, binary.LittleEndian, int32(retLength)) // 执行结果返回
+		// 错误检测
 		if err != nil {
 			log.Println("binary.Write failed:", err)
 		}
