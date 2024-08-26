@@ -16,6 +16,7 @@ var MsgFlags = map[int]string{
 	CommonFailed:                    "通用失败",
 }
 
+// GetMsg 通过错误码获取错误消息
 func GetMsg(code int) string {
 	retString, ok := MsgFlags[code]
 	if !ok {
