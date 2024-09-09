@@ -1,5 +1,7 @@
 package predefine
 
+import "log"
+
 var MsgFlags = map[int]string{
 	SUCCESS:                         "成功",
 	NotLogin:                        "当前未登录",
@@ -22,6 +24,8 @@ func GetMsg(code int) string {
 	if !ok {
 		return ""
 	}
+
+	log.Println("未知错误码")
 
 	return retString
 }
