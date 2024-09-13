@@ -58,6 +58,7 @@ func (c *Conn) DealConnection() {
 		if err != nil {
 			log.Println("binary.Write failed:", err)
 		}
+
 		_, _ = c.conn.Write(append(buf.Bytes(), []byte(retContent)...))
 	}
 }
