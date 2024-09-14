@@ -12,15 +12,15 @@ import (
 	"strconv"
 )
 
-type Conn struct {
+type Connection struct {
 	conn        *net.TCPConn // 连接handler
 	isLogin     bool         // 是否登录标识
 	userAccount string       // 玩家账号
 }
 
 // NewConnection 新建连接
-func NewConnection(conn *net.TCPConn) *Conn {
-	return &Conn{
+func NewConnection(conn *net.TCPConn) *Connection {
+	return &Connection{
 		conn:        conn,
 		isLogin:     false,
 		userAccount: "",
@@ -28,29 +28,29 @@ func NewConnection(conn *net.TCPConn) *Conn {
 }
 
 // DealConnection 处理连接
-func (c *Conn) DealConnection() {
+func (connection *Connection) DealConnection() {
 	// 函数退出关闭连接
 	defer func() {
-		_ = c.conn.Close()
+		_ = connection.conn.Close()
 	}()
 
 	for {
 		// 拆包
 		length := make([]byte, 4) // 长度的字节数固定为4
-		if _, err := io.ReadFull(c.conn, length); err != nil {
+		if _, err := io.ReadFull(connection.conn, length); err != nil {
 			return
 		} // 先拿出表示长度的数据
 		realLength := binary.LittleEndian.Uint32(length)
 		data := make([]byte, realLength)
-		if _, err := io.ReadFull(c.conn, data); err != nil {
+		if _, err := io.ReadFull(connection.conn, data); err != nil {
 			return
 		} // 读取真正的数据
 		content := string(data)
 		log.Println("receive data: ", content)
 
 		// 逻辑处理
-		retContent, _ := c.Dispatch(content) // 指令分发
-		retLength := len(retContent)         // 计算长度
+		retContent, _ := connection.Dispatch(content) // 指令分发
+		retLength := len(retContent)                  // 计算长度
 		buf := new(bytes.Buffer)
 		err := binary.Write(buf, binary.LittleEndian, int32(retLength)) // 执行结果返回
 
@@ -59,36 +59,36 @@ func (c *Conn) DealConnection() {
 			log.Println("binary.Write failed:", err)
 		}
 
-		_, _ = c.conn.Write(append(buf.Bytes(), []byte(retContent)...))
+		_, _ = connection.conn.Write(append(buf.Bytes(), []byte(retContent)...))
 	}
 }
 
 // Dispatch 消息分发
-func (c *Conn) Dispatch(content string) (string, int) {
+func (connection *Connection) Dispatch(content string) (string, int) {
 	stringSlice := util.DealString(content)
 	code := predefine.SUCCESS
 	var retString string
 	length := len(stringSlice)
 
-	if !c.isLogin && !(stringSlice[0] == "login" || stringSlice[0] == "register") {
+	if !connection.isLogin && !(stringSlice[0] == "login" || stringSlice[0] == "register") {
 		code = predefine.NotLogin
 	} else {
 		switch stringSlice[0] {
 		case "register": // 注册并登录
 			retString, code = register(content)
-			c.isLogin = true
-			c.userAccount = stringSlice[1]
+			connection.isLogin = true
+			connection.userAccount = stringSlice[1]
 		case "login": // 登录
 			retString, code = login(content)
-			c.isLogin = true
-			c.userAccount = stringSlice[1]
+			connection.isLogin = true
+			connection.userAccount = stringSlice[1]
 		case "allianceList": // 查看已有公会列表
 			retString, code = allianceList()
 		case "createAlliance": // 创建公会
 			if length != 2 {
 				code = predefine.CreateAllianceFailed
 			} else {
-				err := api.CreateAlliance(c.userAccount, stringSlice[1])
+				err := api.CreateAlliance(connection.userAccount, stringSlice[1])
 				if err != nil {
 					log.Println("create alliance failed, err: ", err)
 					code = predefine.GetAllianceListFalied
@@ -99,7 +99,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 			if length != 2 {
 				code = predefine.JoinAllianceFalied
 			} else {
-				err := api.JoinAlliance(c.userAccount, stringSlice[1])
+				err := api.JoinAlliance(connection.userAccount, stringSlice[1])
 				if err != nil {
 					log.Println("join alliance failed, err: ", err)
 					code = predefine.JoinAllianceFalied
@@ -108,7 +108,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 				retString = "加入公会成功"
 			}
 		case "dismissAlliance": // 解散公会
-			err := api.DismissAlliance(c.userAccount)
+			err := api.DismissAlliance(connection.userAccount)
 			if err != nil {
 				log.Println("leave alliance failed, err: ", err)
 				code = predefine.LeaveAllianceFaliled
@@ -120,7 +120,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 				code = predefine.DestroyAllianceItemFalied
 			} else {
 				num, _ := strconv.Atoi(stringSlice[1])
-				err := api.DestroyItem(c.userAccount, num)
+				err := api.DestroyItem(connection.userAccount, num)
 				if err != nil {
 					log.Println("destroy alliance item failed, err: ", err)
 					code = predefine.DestroyAllianceItemFalied
@@ -129,7 +129,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 				retString = "删除物品成功"
 			}
 		case "clearup": // 整理公会物品
-			err := api.TidyItems(c.userAccount)
+			err := api.TidyItems(connection.userAccount)
 			if err != nil {
 				log.Println("tidy alliance item failed, err: ", err)
 				code = predefine.TidyAllianceItemFalied
@@ -142,7 +142,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 			} else {
 				id, _ := strconv.Atoi(stringSlice[1])
 				num, _ := strconv.Atoi(stringSlice[2])
-				err := api.CommitItem(c.userAccount, id, num)
+				err := api.CommitItem(connection.userAccount, id, num)
 				if err != nil {
 					log.Println("commit item failed, err: ", err)
 					code = predefine.CommitAllianceItemFalied
@@ -151,7 +151,7 @@ func (c *Conn) Dispatch(content string) (string, int) {
 				retString = "提交物品成功"
 			}
 		case "increaseCapacity": // 扩容公会仓库
-			err := api.IncreaseCapacity(c.userAccount)
+			err := api.IncreaseCapacity(connection.userAccount)
 			if err != nil {
 				log.Println("increase capacity failed, err: ", err)
 				code = predefine.IncreaseAllianceCapacityFaliled
@@ -159,14 +159,14 @@ func (c *Conn) Dispatch(content string) (string, int) {
 
 			retString = "扩容公会仓库成功"
 		case "whichAlliance": // 查看自己的公会信息
-			ret, err := api.WhichAlliance(c.userAccount)
+			ret, err := api.WhichAlliance(connection.userAccount)
 			if err != nil {
 				log.Println("which alliance failed, err: ", err)
 			}
 
 			retString = ret
 		case "allianceItems": // 查看公会的物品信息
-			ret, err := api.AllianceItems(c.userAccount)
+			ret, err := api.AllianceItems(connection.userAccount)
 			if err != nil {
 				log.Println("alliance items failed, err: ", err)
 			}
