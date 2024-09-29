@@ -49,9 +49,9 @@ func (c *Conn) DealConnection() {
 		log.Println("receive data: ", content)
 
 		// 逻辑处理
-		retContent, _ := c.Dispatch(content) // 指令分发
-		retLength := len(retContent)         // 计算长度
-		buf := new(bytes.Buffer)
+		retContent, _ := c.Dispatch(content)                            // 指令分发
+		retLength := len(retContent)                                    // 计算长度
+		buf := new(bytes.Buffer)                                        // 初始化缓冲区
 		err := binary.Write(buf, binary.LittleEndian, int32(retLength)) // 执行结果返回
 
 		// 错误检测
