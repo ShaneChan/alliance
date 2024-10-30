@@ -33,7 +33,7 @@ func main() {
 			log.Fatalln("accept error: ", err)
 		}
 
-		// 新的连接到来
+		// 新的连接到来日志打印
 		log.Println("accept new connection, remote address: ", conn.RemoteAddr().String())
 
 		// 请求路由到新的协程去处理（适用于IO密集型的场景）
