@@ -27,7 +27,7 @@ func NewConnection(conn *net.TCPConn) *Connection {
 	}
 }
 
-// DealConnection 处理连接
+// DealConnection 处理连接具体逻辑
 func (connection *Connection) DealConnection() {
 	// 函数退出关闭连接
 	defer func() {
