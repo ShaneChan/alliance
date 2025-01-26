@@ -28,6 +28,7 @@ func main() {
 	// 主协程监听，来了新连接分发到新的协程去处理
 	for {
 		conn, err := listener.AcceptTCP()
+
 		if err != nil {
 			log.Fatalln("accept error: ", err)
 		}

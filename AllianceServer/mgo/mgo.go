@@ -15,7 +15,7 @@ type Client struct {
 }
 
 type db struct {
-	database    *mongo.Database              // db
+	database    *mongo.Database              // db实例
 	collections map[string]*mongo.Collection // 一个db拥有的collection
 }
 
