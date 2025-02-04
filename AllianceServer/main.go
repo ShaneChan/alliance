@@ -25,7 +25,7 @@ func main() {
 	log.Println("starting listening...")
 	log.Println("listen ok on", ipAddr)
 
-	// 主协程开始监听，来了新连接分发到新的协程去处理
+	// 主协程开启监听，来了新连接分发到新的协程去处理
 	for {
 		conn, err := listener.AcceptTCP()
 
