@@ -31,6 +31,7 @@ func InsertMany(db string, table string, documents []interface{}, opts ...*optio
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+
 	return col.InsertMany(ctx, documents, opts...)
 }
 
@@ -44,6 +45,7 @@ func DeleteOne(db string, table string, filter interface{}, opts ...*options.Del
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+
 	return col.DeleteOne(ctx, filter, opts...)
 }
 
@@ -58,6 +60,7 @@ func DeleteMany(db string, table string, filter interface{}, opts ...*options.De
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+
 	return col.DeleteMany(ctx, filter, opts...)
 }
 
@@ -71,6 +74,7 @@ func UpdateOne(db string, table string, filter interface{}, update interface{}, 
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+
 	return col.UpdateOne(ctx, filter, update, opts...)
 }
 
@@ -84,6 +88,7 @@ func UpdateMany(db string, table string, filter interface{}, update interface{},
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+
 	return col.UpdateMany(ctx, filter, update, opts...)
 }
 
