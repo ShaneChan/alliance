@@ -21,7 +21,7 @@ func InsertOne(db string, table string, document interface{}, opts ...*options.I
 	return col.InsertOne(ctx, document, opts...)
 }
 
-// InsertMany 插入多个document
+// InsertMany 插入多个document数据
 func InsertMany(db string, table string, documents []interface{}, opts ...*options.InsertManyOptions) (*mongo.InsertManyResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
@@ -34,7 +34,7 @@ func InsertMany(db string, table string, documents []interface{}, opts ...*optio
 	return col.InsertMany(ctx, documents, opts...)
 }
 
-// DeleteOne 删除一个document
+// DeleteOne 删除一个document数据
 func DeleteOne(db string, table string, filter interface{}, opts ...*options.DeleteOptions) (*mongo.DeleteResult, error) {
 	col, err := getCollection(db, table)
 	if err != nil {
