@@ -18,6 +18,7 @@ func InsertOne(db string, table string, document interface{}, opts ...*options.I
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+
 	return col.InsertOne(ctx, document, opts...)
 }
 
@@ -103,6 +104,7 @@ func Find(db string, table string, filter interface{}, opts ...*options.FindOpti
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+
 	return col.Find(ctx, filter, opts...)
 }
 
@@ -130,6 +132,7 @@ func FindOneAndUpdate(db, table string, filter interface{}, update interface{}, 
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+
 	return col.FindOneAndUpdate(ctx, filter, update, opts...), nil
 }
 
@@ -144,5 +147,6 @@ func CountDocuments(db string, table string, filter interface{}, opts ...*option
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+
 	return col.CountDocuments(ctx, filter, opts...)
 }
